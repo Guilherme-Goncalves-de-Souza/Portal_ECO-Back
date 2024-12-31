@@ -12,10 +12,9 @@ const PORT = process.env.PORT || 3001;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Configurar CORS para permitir o front-end na porta 5173
 app.use(
   cors({
-    origin: "https://portal-eco-front.vercel.app/", // Permitir somente o front-end
+    origin: "https://portal-eco-front.vercel.app", // Permitir somente o front-end
     credentials: true, // Permitir envio de cookies e cabeçalhos de autenticação
   })
 );
