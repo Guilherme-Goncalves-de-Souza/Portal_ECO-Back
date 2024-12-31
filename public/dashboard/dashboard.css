@@ -1,13 +1,12 @@
-/* Estilos gerais para o dashboard */
 body {
   font-family: Arial, sans-serif;
   background: #f4f4f9;
   margin: 0;
   padding: 0;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 /* Estilo para o cabeçalho */
@@ -16,16 +15,15 @@ body {
   padding: 10px 20px;
   background-color: #f4f4f9;
   display: flex;
-  justify-content: space-between; /* Espaço entre logo e botão */
+  justify-content: space-between;
   align-items: center;
-  position: fixed; /* Mantém o cabeçalho fixo no topo */
+  position: fixed;
   top: 0;
   left: 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 10; /* Garante que o cabeçalho esteja acima de outros elementos */
+  z-index: 10;
 }
 
-/* Estilo da logo */
 .logo-link {
   display: flex;
   align-items: center;
@@ -33,11 +31,10 @@ body {
 }
 
 .logo-img {
-  height: 110px;
+  height: 60px;
   object-fit: contain;
 }
 
-/* Estilo do botão de logout */
 .header button {
   background: #e74c3c;
   color: #fff;
@@ -47,33 +44,30 @@ body {
   border-radius: 5px;
   cursor: pointer;
   transition: background 0.3s;
-  margin-right: 50px;
 }
 
 .header button:hover {
   background: #c0392b;
 }
 
-/* Ajuste para o container principal */
+/* Container principal */
 .container {
-  margin-top: 100px; /* Espaço para o cabeçalho fixo */
+  margin-top: 100px;
   background: #ffffff;
   padding: 30px 40px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  max-width: 400px;
+  width: 90%;
+  max-width: 600px;
   text-align: center;
 }
 
-/* Título */
 h1 {
   font-size: 24px;
   margin-bottom: 20px;
   color: #333;
 }
 
-/* Formulário */
 form input,
 form textarea,
 form button {
@@ -102,22 +96,73 @@ form button:hover {
   background: #0056b3;
 }
 
-/* Mensagem de feedback */
 #news-message {
   font-size: 14px;
   margin-top: 10px;
-  color: #28a745; /* Verde para sucesso */
+  color: #28a745;
 }
 
-/* Responsividade para telas menores */
+/* Estilo para os cards de notícias */
+.news-list {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.news-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.news-item-content {
+  max-width: 80%;
+}
+
+.news-item h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.news-item p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.news-item button {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.news-item button:hover {
+  background: #c0392b;
+}
+
 @media (max-width: 768px) {
   .container {
-    width: 90%;
     padding: 20px;
   }
 
-  .header button {
-    padding: 8px 12px;
-    font-size: 14px;
+  .news-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .news-item button {
+    align-self: flex-end;
+    margin-top: 10px;
   }
 }
