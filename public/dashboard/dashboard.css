@@ -44,6 +44,8 @@ body {
   border-radius: 5px;
   cursor: pointer;
   transition: background 0.3s;
+
+  margin-right: 50px;
 }
 
 .header button:hover {
