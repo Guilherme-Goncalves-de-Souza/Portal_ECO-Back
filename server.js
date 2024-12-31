@@ -130,3 +130,21 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
+
+app.delete("/noticias/:id", verificarAutenticacao, (req, res) => {
+  const noticiaId = req.params.id;
+
+  if (!noticiaId) {
+    return res.status(400).json({ error: "ID da notícia é obrigatório." });
+  }
+
+  db.run(`DELETE FROM noticias WHERE id = ?`, [noticiaId], (err) => {
+    if (err) {
+      console.error("Erro ao excluir notícia:", err.message);
+      res.status(500).json({ error: "Erro ao excluir notícia." });
+    } else {
+      console.log("Notícia excluída com sucesso.");
+      res.status(200).json({ message: "Notícia excluída com sucesso!" });
+    }
+  });
+});

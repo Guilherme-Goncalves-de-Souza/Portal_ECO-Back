@@ -25,17 +25,68 @@
         <h1>Bem-vindo ao Dashboard</h1>
         <p>Aqui você pode gerenciar suas notícias.</p>
 
+        <!-- Formulário para adicionar notícias -->
         <form id="news-form">
             <input type="text" id="titulo" placeholder="Título da notícia" required>
             <textarea id="conteudo" placeholder="Conteúdo da notícia" rows="5" required></textarea>
             <button type="submit">Adicionar Notícia</button>
         </form>
         <p id="news-message"></p>
+
+        <!-- Listagem de notícias -->
+        <div id="news-list"></div>
     </div>
 
     <script>
         const newsForm = document.getElementById('news-form');
         const logoutButton = document.getElementById('logout-button');
+        const newsList = document.getElementById('news-list');
+        const newsMessage = document.getElementById('news-message');
+
+        // Função para carregar notícias
+        async function carregarNoticias() {
+            try {
+                const response = await fetch('/noticias', { method: 'GET', credentials: 'include' });
+                const noticias = await response.json();
+
+                newsList.innerHTML = '';
+                noticias.forEach((noticia) => {
+                    const noticiaElement = document.createElement('div');
+                    noticiaElement.classList.add('news-item');
+                    noticiaElement.innerHTML = `
+                        <h3>${noticia.titulo}</h3>
+                        <p>${noticia.conteudo}</p>
+                        <p><strong>Data:</strong> ${noticia.data}</p>
+                        <button onclick="excluirNoticia(${noticia.id})">Excluir</button>
+                    `;
+                    newsList.appendChild(noticiaElement);
+                });
+            } catch (error) {
+                newsMessage.innerText = 'Erro ao carregar notícias.';
+            }
+        }
+
+        // Função para excluir notícia
+        async function excluirNoticia(id) {
+            const confirmacao = confirm('Tem certeza que deseja excluir esta notícia?');
+            if (!confirmacao) return;
+
+            try {
+                const response = await fetch(`/noticias/${id}`, {
+                    method: 'DELETE',
+                    credentials: 'include',
+                });
+
+                if (response.ok) {
+                    alert('Notícia excluída com sucesso!');
+                    carregarNoticias();
+                } else {
+                    alert('Erro ao excluir notícia.');
+                }
+            } catch (error) {
+                alert('Erro ao excluir notícia.');
+            }
+        }
 
         // Adicionar notícia
         newsForm.addEventListener('submit', async (e) => {
@@ -44,33 +95,45 @@
             const titulo = document.getElementById('titulo').value;
             const conteudo = document.getElementById('conteudo').value;
 
-            const response = await fetch('/noticias', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ titulo, conteudo }),
-                credentials: 'include', // Envia cookies na requisição
-            });
+            try {
+                const response = await fetch('/noticias', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ titulo, conteudo }),
+                    credentials: 'include',
+                });
 
-            const data = await response.json();
-            if (response.ok) {
-                document.getElementById('news-message').innerText = 'Notícia adicionada com sucesso!';
-                newsForm.reset();
-            } else {
-                document.getElementById('news-message').innerText = data.error;
+                const data = await response.json();
+                if (response.ok) {
+                    newsMessage.innerText = 'Notícia adicionada com sucesso!';
+                    newsForm.reset();
+                    carregarNoticias();
+                } else {
+                    newsMessage.innerText = data.error;
+                }
+            } catch (error) {
+                newsMessage.innerText = 'Erro ao adicionar notícia.';
             }
         });
 
         // Logout
         logoutButton.addEventListener('click', async () => {
-            const response = await fetch('/logout', {
-                method: 'POST',
-                credentials: 'include',
-            });
+            try {
+                const response = await fetch('/logout', {
+                    method: 'POST',
+                    credentials: 'include',
+                });
 
-            if (response.ok) {
-                window.location.href = '/login';
+                if (response.ok) {
+                    window.location.href = '/login';
+                }
+            } catch (error) {
+                alert('Erro ao fazer logout.');
             }
         });
+
+        // Carregar as notícias ao abrir o dashboard
+        carregarNoticias();
     </script>
 </body>
 
