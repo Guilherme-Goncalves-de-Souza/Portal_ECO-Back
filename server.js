@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Configurar CORS para permitir o front-end na porta 5173
 app.use(
   cors({
-    origin: "http://localhost:5173", // Permitir somente o front-end
+    origin: "https://portal-eco-front.vercel.app/", // Permitir somente o front-end
     credentials: true, // Permitir envio de cookies e cabeçalhos de autenticação
   })
 );
