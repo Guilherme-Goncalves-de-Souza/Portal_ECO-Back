@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./icone.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Guilherme Gonçalves de Souza">
+    <meta name="description" content="Portal ECO: Conectando Comunidades para um Futuro Sustentável e Consciente.">
+    <meta name="keywords" content="React, Typescript, ONGs, Natureza">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+    <!-- Botão de Logout no topo -->
+    <div class="header">
+        <a href="/dashboard" class="logo-link">
+            <img src="../PORTAL_ECO.png" alt="Logo Portal" class="logo-img" />
+        </a>
+        <button id="logout-button">Logout</button>
+    </div>
+
+    <div class="container">
+        <h1>Bem-vindo ao Dashboard</h1>
+        <p>Aqui você pode gerenciar suas notícias.</p>
+
+        <form id="news-form">
+            <input type="text" id="titulo" placeholder="Título da notícia" required>
+            <textarea id="conteudo" placeholder="Conteúdo da notícia" rows="5" required></textarea>
+            <button type="submit">Adicionar Notícia</button>
+        </form>
+        <p id="news-message"></p>
+    </div>
+
+    <script>
+        const newsForm = document.getElementById('news-form');
+        const logoutButton = document.getElementById('logout-button');
+
+        // Adicionar notícia
+        newsForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const titulo = document.getElementById('titulo').value;
+            const conteudo = document.getElementById('conteudo').value;
+
+            const response = await fetch('/noticias', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ titulo, conteudo }),
+                credentials: 'include', // Envia cookies na requisição
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                document.getElementById('news-message').innerText = 'Notícia adicionada com sucesso!';
+                newsForm.reset();
+            } else {
+                document.getElementById('news-message').innerText = data.error;
+            }
+        });
+
+        // Logout
+        logoutButton.addEventListener('click', async () => {
+            const response = await fetch('/logout', {
+                method: 'POST',
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                window.location.href = '/login';
+            }
+        });
+    </script>
+</body>
+
+</html>
